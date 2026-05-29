@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서초 AI·디지털 리터러시 교육 추천</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f0;
+  --bg-tertiary: #eeede8;
+  --text-primary: #1a1a18;
+  --text-secondary: #6b6b68;
+  --border: rgba(0,0,0,0.12);
+  --border-md: rgba(0,0,0,0.22);
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --blue-dark: #0C447C;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #1e1e1c;
+    --bg-secondary: #2a2a28;
+    --bg-tertiary: #242422;
+    --text-primary: #e8e8e4;
+    --text-secondary: #9a9a96;
+    --border: rgba(255,255,255,0.12);
+    --border-md: rgba(255,255,255,0.22);
+    --blue: #5fa3e0;
+    --blue-light: #0c2a45;
+    --blue-dark: #8bbde8;
+  }
+}
+html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Malgun Gothic', '맑은 고딕', sans-serif; font-size: 15px; background: var(--bg-tertiary); color: var(--text-primary); }
+body { min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 1.5rem 1rem 3rem; }
+.wrap { width: 100%; max-width: 600px; background: var(--bg-primary); border-radius: var(--radius-xl); border: 0.5px solid var(--border); overflow: hidden; }
+.header { display: flex; align-items: center; gap: 12px; padding: 1.25rem 1.5rem 1rem; border-bottom: 0.5px solid var(--border); background: var(--bg-primary); }
+.logo { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.logo i { font-size: 20px; color: var(--blue); }
+.title-area h1 { font-size: 16px; font-weight: 600; margin: 0; color: var(--text-primary); }
+.title-area p { font-size: 11px; color: var(--text-secondary); margin: 2px 0 0; }
+.chat-scroll { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 12px; min-height: 300px; }
+.bot-row { display: flex; align-items: flex-end; gap: 8px; }
+.bot-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.bot-avatar i { font-size: 14px; color: var(--blue); }
+.bubble { max-width: 88%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.65; }
+.bubble.bot { background: var(--bg-secondary); border: 0.5px solid var(--border); color: var(--text-primary); border-bottom-left-radius: 4px; }
+.bubble.user { background: var(--blue); color: #fff; border-bottom-right-radius: 4px; }
+.user-row { display: flex; justify-content: flex-end; }
+.options-row { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 36px; }
+.opt-btn { background: var(--bg-primary); border: 0.5px solid var(--border-md); border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer; color: var(--text-primary); font-family: inherit; transition: background 0.12s, border-color 0.12s; }
+.opt-btn:hover { background: var(--bg-secondary); border-color: var(--blue); }
+.input-row { display: flex; gap: 8px; padding-left: 36px; }
+.input-row input { flex: 1; font-size: 14px; font-family: inherit; border-radius: 20px; padding: 8px 14px; border: 0.5px solid var(--border-md); background: var(--bg-primary); color: var(--text-primary); outline: none; }
+.input-row input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(24,95,165,0.15); }
+.input-row button { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-family: inherit; background: var(--blue); color: #fff; border: none; cursor: pointer; white-space: nowrap; }
+.input-row button:hover { background: var(--blue-dark); }
+.course-card { background: var(--bg-primary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; margin-top: 6px; }
+.course-card .c-title { font-weight: 600; font-size: 14px; margin-bottom: 5px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+.course-meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+.course-badge { display: inline-block; background: var(--blue-light); color: var(--blue); font-size: 11px; padding: 2px 9px; border-radius: 20px; margin-right: 4px; margin-bottom: 4px; }
+.course-desc { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-top: 7px; border-top: 0.5px solid var(--border); padding-top: 8px; }
+.typing { display: flex; align-items: center; gap: 4px; padding: 10px 14px; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--text-secondary); animation: blink 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
+.bottom-area { padding: 0.75rem 1.5rem 1.25rem; border-top: 0.5px solid var(--border); background: var(--bg-primary); }
+.hotline { font-size: 12px; color: var(--text-secondary); background: var(--bg-secondary); border-radius: var(--radius-md); padding: 9px 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.hotline i { font-size: 16px; color: var(--blue); flex-shrink: 0; }
+.reset-btn { background: none; border: 0.5px solid var(--border-md); border-radius: 20px; padding: 6px 16px; font-size: 12px; color: var(--text-secondary); cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 5px; }
+.reset-btn:hover { background: var(--bg-secondary); }
+.star { color: #EA9A3E; }
+strong { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="logo"><i class="ti ti-school" aria-hidden="true"></i></div>
+    <div class="title-area">
+      <h1>서초 AI·디지털 리터러시 교육 추천</h1>
+      <p>서초 스마트 에듀센터 · 양재역 10번 출구 앞</p>
+    </div>
+  </div>
+
+  <div class="chat-scroll" id="chat" role="log" aria-live="polite" aria-label="상담 대화창"></div>
+
+  <div class="bottom-area">
+    <div class="hotline" id="hotline" style="display:none">
+      <i class="ti ti-phone" aria-hidden="true"></i>
+      <span>교육 상담 및 접수 콜센터 <strong>1600-1902</strong> · <strong>02-2155-6078</strong></span>
+    </div>
+    <button class="reset-btn" id="resetBtn" onclick="reset()" style="display:none" aria-label="처음부터 다시 시작">
+      <i class="ti ti-refresh" aria-hidden="true"></i> 처음부터 다시 시작
+    </button>
+  </div>
+</div>
+
+<script>
+const COURSES_7 = [
+  { name:"키네마스터 AI 영상편집", type:"특강", device:"스마트폰", category:"AI 영상제작", stars:3, when:"7월 월요특강 (7.6~7.27)", time:"09:30~12:00", desc:"스마트폰 하나로 고퀄리티 영상! AI 자동 편집 기능을 정복해 나만의 브이로그를 완성하는 과정", tags:["스마트폰","영상편집","AI","초중급"] },
+  { name:"ChatGPT 입문에서 활용까지", type:"정규", device:"컴퓨터+스마트폰", category:"생성형AI 입문", stars:1, when:"7월 화/목 정규 (7.7~7.30)", time:"09:30~12:00", desc:"왕초보도 바로! 대화형 AI 기초 사용법부터 내 삶을 바꾸는 실전 프롬프트 작성법까지", tags:["AI","ChatGPT","입문","완전기초"] },
+  { name:"AI가 도와주는 똑똑한 엑셀", type:"특강", device:"컴퓨터", category:"AI 오피스", stars:2, when:"7월 월요특강 (7.6~7.27)", time:"13:00~15:30", desc:"엑셀 기초부터 함수·데이터 관리까지 AI와 함께 효율적으로 익히는 실무 활용 과정", tags:["컴퓨터","엑셀","AI","초중급"] },
+  { name:"스마트업무스킬(윈도우,노션,AI,클라우드)", type:"특강", device:"컴퓨터+스마트폰", category:"디지털워크/AI", stars:1, when:"7월 화/목 정규 (7.7~7.30)", time:"15:40~18:10", desc:"윈도우 기반 AI로 생성한 결과를 노션에 정리, 클라우드 보관 및 관리 등 실전 디지털 업무 강화", tags:["AI","컴퓨터","입문","디지털업무"] },
+  { name:"ITQ 한글 자격증", type:"정규", device:"컴퓨터", category:"자격증/한글", stars:3, when:"7월 화/목 정규 (7.7~7.30)", time:"13:00~15:30", desc:"국가공인 ITQ 자격증 과정을 취득하기 위한 활용 과정", tags:["컴퓨터","한글","자격증","중급"] },
+  { name:"네이버 블로그 & AI 포스팅", type:"정규", device:"컴퓨터+스마트폰", category:"블로그/AI콘텐츠", stars:3, when:"7월 화/목 정규 (7.7~7.30)", time:"15:40~18:10", desc:"AI(Gemini)로 기획하고 모바일로 완성하는 스마트 블로그 운영법, 파워블로거 되기 위한 과정", tags:["AI","블로그","Gemini","중급"] },
+  { name:"AI 스마트 오피스와 실무 생산성 극대화", type:"정규", device:"컴퓨터", category:"AI 업무생산성", stars:3, when:"7월 화/목 정규 (7.7~7.30)", time:"18:30~21:00", desc:"주요 AI(GPT, Gemini, Claude)를 비교 체험하고 문서, 데이터, 자동화 등 실무 생산성을 높이는 과정", tags:["AI","업무","GPT","Gemini","중급"] }
+];
+const COURSES_8 = [
+  { name:"캔바로 완성하는 움직이는 사진 앨범", type:"특강", device:"컴퓨터", category:"AI 영상기초", stars:2, when:"8월 월요특강 (8.3~8.10)", time:"09:30~12:00", desc:"내 사진을 캔바에서 추가하고 애니메이션을 활용해 움직이는 사진 앨범으로 만드는 과정", tags:["캔바","사진","애니메이션","초중급"] },
+  { name:"유튜브 채널관리", type:"정규", device:"컴퓨터+스마트폰", category:"유튜브 브랜딩", stars:4, when:"8월 화/목 정규 (8.4~8.13)", time:"09:30~12:00", desc:"AI로 기획하고 데이터로 관리한다! 구독자의 선택을 받는 채널 최적화 및 브랜딩 실전 가이드", tags:["유튜브","AI","브랜딩","고급"] },
+  { name:"감마 AI로 만드는 초간단 PPT", type:"특강", device:"컴퓨터", category:"AI 오피스", stars:2, when:"8월 월요특강 (8.3~8.10)", time:"13:00~15:30", desc:"간단한 프롬프트 만으로 즉시 실무에 활용 가능한 프레젠테이션을 완성하는 과정", tags:["PPT","AI","Gamma","초중급"] },
+  { name:"AI와 함께하는 한글 문서", type:"정규", device:"컴퓨터", category:"AI 오피스", stars:2, when:"8월 화/목 정규 (8.4~8.13)", time:"13:00~15:30", desc:"AI로 기획하고 한글로 완성하는 스마트 워크! 문서 작성의 스트레스를 업무 즐거움으로 바꾸기", tags:["한글","AI","문서","초중급"] },
+  { name:"제미나이로 AI 시작하기", type:"특강", device:"컴퓨터+스마트폰", category:"AI 기초", stars:1, when:"8월 월요특강 (8.3~8.10)", time:"15:40~18:10", desc:"Gemini(제미나이) 기본 사용법부터 일상에 활용까지 쉽게 배우는 AI 입문 과정", tags:["AI","Gemini","입문","완전기초"] },
+  { name:"AI를 활용한 멀티미디어 제작", type:"정규", device:"컴퓨터", category:"AI 콘텐츠", stars:2, when:"8월 화/목 정규 (8.4~8.13)", time:"15:40~18:10", desc:"생성형 AI 도구를 활용해 음악, 이미지, 영상 콘텐츠를 쉽고 빠르게 제작하는 과정", tags:["AI","음악","이미지","영상","초중급"] },
+  { name:"AI 콘텐츠 크리에이티브 디자인", type:"정규", device:"컴퓨터", category:"AI 콘텐츠 디자인", stars:3, when:"8월 화/목 정규 (8.4~8.13)", time:"18:30~21:00", desc:"ChatGPT·Gemini로 이미지와 웹페이지, Gamma 발표자료를 만드는 AI 콘텐츠 디자인 과정", tags:["AI","디자인","ChatGPT","Gemini","중급"] }
+];
+const ALL_COURSES = [...COURSES_7, ...COURSES_8];
+
+const state = { district:'', isEligible:false, interest:'', level:0, answers:[] };
+
+function starsHtml(n) {
+  let s = '';
+  for(let i=0;i<4;i++) s += `<span class="star">${i<n?'★':'☆'}</span>`;
+  return s;
+}
+
+function renderCard(c) {
+  return `<div class="course-card">
+    <div class="c-title"><i class="ti ti-book-2" aria-hidden="true" style="font-size:14px;color:var(--blue)"></i>${c.name}</div>
+    <div class="course-meta">${starsHtml(c.stars)} ${c.category} &nbsp;·&nbsp; ${c.when} &nbsp;·&nbsp; ${c.time}</div>
+    <div>${c.tags.map(t=>`<span class="course-badge">${t}</span>`).join('')}</div>
+    <div class="course-desc">${c.desc}</div>
+  </div>`;
+}
+
+function addBot(html, delay=300) {
+  return new Promise(res => {
+    const chat = document.getElementById('chat');
+    const typing = document.createElement('div');
+    typing.className = 'bot-row';
+    typing.innerHTML = `<div class="bot-avatar"><i class="ti ti-robot" aria-hidden="true"></i></div><div class="bubble bot typing"><span></span><span></span><span></span></div>`;
+    chat.appendChild(typing);
+    typing.scrollIntoView({behavior:'smooth',block:'nearest'});
+    setTimeout(()=>{
+      chat.removeChild(typing);
+      const row = document.createElement('div');
+      row.className = 'bot-row';
+      row.innerHTML = `<div class="bot-avatar"><i class="ti ti-robot" aria-hidden="true"></i></div><div class="bubble bot">${html}</div>`;
+      chat.appendChild(row);
+      row.scrollIntoView({behavior:'smooth',block:'nearest'});
+      res();
+    }, delay);
+  });
+}
+
+function addUser(text) {
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div');
+  row.className = 'user-row';
+  row.innerHTML = `<div class="bubble user">${text}</div>`;
+  chat.appendChild(row);
+  row.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function clearControls() {
+  ['opts','inp'].forEach(id => { const el = document.getElementById(id); if(el) el.remove(); });
+}
+
+function addOptions(opts, onSelect) {
+  clearControls();
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div');
+  row.className = 'options-row';
+  row.id = 'opts';
+  opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = o;
+    b.onclick = () => { clearControls(); onSelect(o); };
+    row.appendChild(b);
+  });
+  chat.appendChild(row);
+  row.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function addInput(placeholder, onSubmit) {
+  clearControls();
+  const chat = document.getElementById('chat');
+  const row = document.createElement('div');
+  row.className = 'input-row';
+  row.id = 'inp';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = placeholder;
+  const btn = document.createElement('button');
+  btn.textContent = '확인';
+  btn.onclick = () => { const v = input.value.trim(); if(!v) return; clearControls(); onSubmit(v); };
+  input.onkeydown = e => { if(e.key==='Enter') btn.click(); };
+  row.appendChild(input); row.appendChild(btn);
+  chat.appendChild(row);
+  input.focus();
+  row.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+async function step0() {
+  await addBot('안녕하세요! 서초 스마트 에듀센터 강좌 추천 도우미입니다 😊<br>먼저 거주하시는 구청을 알려주세요. <span style="color:var(--text-secondary);font-size:13px">(예: 서초구, 강남구, 동작구 등)</span>');
+  addInput('거주 구청 입력 (예: 서초구)', async (v) => {
+    addUser(v + '에 거주하시는군요.');
+    state.district = v;
+    const isSeocho = v.replace(/\s/g,'').includes('서초');
+    if (isSeocho) {
+      state.isEligible = true;
+      await addBot(`<strong>서초구민</strong>이시군요! ✅ 수강료가 <strong>무료</strong>입니다.<br>어떤 분야를 배우고 싶으신가요?`);
+      step2();
+    } else {
+      await addBot(`${v}에 거주하시는군요. 서초 관내에 직장 또는 사업장이 있으신가요?`);
+      addOptions(['네, 서초구에 직장/사업장 있음','아니오, 없음'], async (ans) => {
+        addUser(ans);
+        if (ans.includes('네')) {
+          state.isEligible = true;
+          await addBot(`서초 관내 직장/사업자이시군요! ✅ 수강료가 <strong>무료</strong>입니다.<br>어떤 분야를 배우고 싶으신가요?`);
+          step2();
+        } else {
+          await addBot(`아쉽지만 현재 서초구민 및 서초 관내 직장인·사업자만 수강 신청이 가능합니다.<br>더 궁금한 점이 있으시면 콜센터로 문의해 주세요.`);
+          document.getElementById('hotline').style.display = 'flex';
+          document.getElementById('resetBtn').style.display = 'flex';
+        }
+      });
+    }
+  });
+}
+
+async function step2() {
+  await addBot(`배우고 싶은 분야를 선택해 주세요.`);
+  addOptions(['💻 컴퓨터 기초/오피스','📱 스마트폰','🤖 AI·ChatGPT','📹 영상 편집','📝 유튜브/블로그','🎓 자격증'], async (ans) => {
+    addUser(ans + ' 분야에 관심 있으시군요!');
+    state.interest = ans;
+    step3();
+  });
+}
+
+async function step3() {
+  const interest = state.interest;
+  let q, opts;
+  if (interest.includes('스마트폰')) {
+    q = '스마트폰을 얼마나 사용하고 계신가요?';
+    opts = ['전원/전화만 간신히','카톡·사진 가능','앱 설치·검색 자유롭게','거의 다 할 수 있음'];
+  } else if (interest.includes('자격증')) {
+    q = '컴퓨터 프로그램(한글/엑셀 등) 사용 경험이 어느 정도인가요?';
+    opts = ['거의 처음','기초 타이핑 가능','문서 작성 경험 있음','함수·편집 어느 정도 가능'];
+  } else if (interest.includes('AI') || interest.includes('ChatGPT')) {
+    q = 'AI 서비스(ChatGPT, 제미나이 등)를 사용해 보신 적 있나요?';
+    opts = ['들어봤지만 써본 적 없음','한두 번 써봤음','자주 사용함','업무에도 활용 중'];
+  } else if (interest.includes('영상')) {
+    q = '영상 편집 경험이 어느 정도인가요?';
+    opts = ['편집 앱 처음','간단한 자르기 가능','자막·효과 적용 가능','자유롭게 편집 가능'];
+  } else if (interest.includes('유튜브') || interest.includes('블로그')) {
+    q = '채널이나 블로그를 운영해 보신 적 있나요?';
+    opts = ['전혀 없음','계정은 있는데 글 안 씀','가끔 포스팅함','꾸준히 운영 중'];
+  } else {
+    q = '컴퓨터 사용이 어느 정도 익숙하신가요?';
+    opts = ['거의 처음','인터넷 검색 정도','문서 작성 가능','엑셀/업무 활용 가능'];
+  }
+  await addBot(q);
+  addOptions(opts, async (ans) => {
+    addUser(ans);
+    state.level = opts.indexOf(ans);
+    state.answers.push(ans);
+    step4();
+  });
+}
+
+async function step4() {
+  const interest = state.interest;
+  let q2, opts2;
+  if (interest.includes('AI') || interest.includes('ChatGPT')) {
+    q2 = 'AI로 주로 하고 싶은 것이 무엇인가요?';
+    opts2 = ['일상 검색·요약·글쓰기','이미지·영상 만들기','업무 자동화·문서 작성','유튜브·블로그 콘텐츠 제작'];
+  } else if (interest.includes('컴퓨터')) {
+    q2 = '컴퓨터로 주로 하고 싶은 것은?';
+    opts2 = ['한글/워드 문서 작성','엑셀 표·데이터 관리','파워포인트 발표 자료','기타 사무 활용'];
+  } else if (interest.includes('영상')) {
+    q2 = '주로 어떤 기기로 영상을 만들고 싶으신가요?';
+    opts2 = ['스마트폰','컴퓨터','둘 다'];
+  } else {
+    q2 = '수업 시간대는 언제가 편하신가요?';
+    opts2 = ['오전 (09:30~12:00)','오후 (13:00~15:30)','늦은 오후 (15:40~18:10)','저녁 (18:30~21:00)'];
+  }
+  await addBot(q2);
+  addOptions(opts2, async (ans) => {
+    addUser(ans);
+    state.answers.push(ans);
+    recommend();
+  });
+}
+
+async function recommend() {
+  await addBot('잠깐만요, 딱 맞는 강좌를 찾아볼게요! 🔍', 700);
+  const { interest, level } = state;
+  let picks = [];
+
+  if (interest.includes('AI') || interest.includes('ChatGPT')) {
+    if (level <= 1) picks = ALL_COURSES.filter(c => c.tags.includes('입문') || c.tags.includes('완전기초') || c.name.includes('ChatGPT') || c.name.includes('제미나이'));
+    else if (level === 2) picks = ALL_COURSES.filter(c => c.stars >= 2 && c.stars <= 3 && c.tags.includes('AI'));
+    else picks = ALL_COURSES.filter(c => c.stars >= 3 && c.tags.includes('AI'));
+  } else if (interest.includes('스마트폰')) {
+    picks = ALL_COURSES.filter(c => c.device.includes('스마트폰') || c.tags.includes('스마트폰'));
+    if (level <= 1) picks = picks.filter(c => c.stars <= 2);
+  } else if (interest.includes('영상')) {
+    picks = ALL_COURSES.filter(c => c.category.includes('영상') || c.tags.includes('영상편집') || c.name.includes('영상'));
+    if (level <= 1) picks = picks.filter(c => c.stars <= 2);
+  } else if (interest.includes('자격증')) {
+    picks = ALL_COURSES.filter(c => c.category.includes('자격증') || c.tags.includes('자격증'));
+  } else if (interest.includes('유튜브') || interest.includes('블로그')) {
+    picks = ALL_COURSES.filter(c => c.tags.includes('유튜브') || c.tags.includes('블로그') || c.name.includes('유튜브') || c.name.includes('블로그'));
+  } else {
+    picks = level <= 1 ? ALL_COURSES.filter(c => c.stars <= 2) : ALL_COURSES.filter(c => c.stars >= 2 && c.stars <= 3);
+  }
+
+  if (picks.length === 0) picks = ALL_COURSES.filter(c => c.stars <= 2).slice(0, 2);
+  picks = picks.slice(0, 2);
+
+  const levelText = level <= 0 ? '완전 기초부터 차근차근 시작하시면 좋겠습니다 😊' :
+    level === 1 ? '기초는 어느 정도 되시니 활용 과정으로 가셔도 좋습니다!' :
+    level === 2 ? '기본은 익숙하시니 중급 실습형이 잘 맞으실 것 같습니다!' :
+    '실력이 있으시니 심화 과정도 도전해 보세요! 💪';
+
+  let html = `${levelText}<br><br>현재 <strong>7~8월</strong> 추천 강좌입니다 👇`;
+  picks.forEach(c => html += renderCard(c));
+  html += `<div style="margin-top:10px;font-size:12px;color:var(--text-secondary)">📌 접수: 서초구청 홈페이지 (선착순) · 회원가입 필수 · 본인 신분증 지참</div>`;
+
+  await addBot(html, 800);
+  await addBot('더 궁금한 점이나 다른 과정을 알아보고 싶으시면 편하게 말씀해 주세요 😊', 400);
+
+  document.getElementById('hotline').style.display = 'flex';
+  document.getElementById('resetBtn').style.display = 'flex';
+
+  addOptions(['다른 분야 강좌 보기','접수 방법 알려주세요'], async (ans) => {
+    addUser(ans);
+    if (ans.includes('다른')) {
+      reset();
+    } else {
+      await addBot(`수강 신청은 <strong>서초구청 홈페이지</strong>에서 인터넷으로 접수하실 수 있습니다.<br>전화 접수는 불가하며, <strong>회원가입이 필수</strong>입니다.<br>월별 최대 2개 강좌까지 신청하실 수 있어요.<br><br>📍 교육 장소: 서초 스마트 에듀센터 (양재주차빌딩 405호, 양재역 10번 출구 앞)<br><br>자세한 안내는 콜센터로 문의해 주세요!`);
+    }
+  });
+}
+
+function reset() {
+  document.getElementById('chat').innerHTML = '';
+  document.getElementById('hotline').style.display = 'none';
+  document.getElementById('resetBtn').style.display = 'none';
+  Object.assign(state, { district:'', isEligible:false, interest:'', level:0, answers:[] });
+  step0();
+}
+
+step0();
+</script>
+</body>
+</html>
