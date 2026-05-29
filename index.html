@@ -282,22 +282,31 @@ async function step4() {
   let q2, opts2;
   if (interest.includes('AI') || interest.includes('ChatGPT')) {
     q2 = 'AI로 주로 하고 싶은 것이 무엇인가요?';
-    opts2 = ['일상 검색·요약·글쓰기','이미지·영상 만들기','업무 자동화·문서 작성','유튜브·블로그 콘텐츠 제작'];
+    opts2 = ['일상 검색·요약·글쓰기','이미지·영상 만들기','업무 자동화·문서 작성','유튜브·블로그 콘텐츠 제작','✏️ 기타 (직접 입력)'];
   } else if (interest.includes('컴퓨터')) {
     q2 = '컴퓨터로 주로 하고 싶은 것은?';
-    opts2 = ['한글/워드 문서 작성','엑셀 표·데이터 관리','파워포인트 발표 자료','기타 사무 활용'];
+    opts2 = ['한글/워드 문서 작성','엑셀 표·데이터 관리','파워포인트 발표 자료','기타 사무 활용','✏️ 기타 (직접 입력)'];
   } else if (interest.includes('영상')) {
     q2 = '주로 어떤 기기로 영상을 만들고 싶으신가요?';
-    opts2 = ['스마트폰','컴퓨터','둘 다'];
+    opts2 = ['스마트폰','컴퓨터','둘 다','✏️ 기타 (직접 입력)'];
   } else {
     q2 = '수업 시간대는 언제가 편하신가요?';
-    opts2 = ['오전 (09:30~12:00)','오후 (13:00~15:30)','늦은 오후 (15:40~18:10)','저녁 (18:30~21:00)'];
+    opts2 = ['오전 (09:30~12:00)','오후 (13:00~15:30)','늦은 오후 (15:40~18:10)','저녁 (18:30~21:00)','✏️ 기타 (직접 입력)'];
   }
   await addBot(q2);
   addOptions(opts2, async (ans) => {
-    addUser(ans);
-    state.answers.push(ans);
-    recommend();
+    if (ans.includes('기타')) {
+      await addBot('어떤 내용을 배우고 싶으신지 자유롭게 적어주세요 😊');
+      addInput('배우고 싶은 내용을 입력해 주세요', async (text) => {
+        addUser(text);
+        state.answers.push(text);
+        recommend();
+      });
+    } else {
+      addUser(ans);
+      state.answers.push(ans);
+      recommend();
+    }
   });
 }
 
