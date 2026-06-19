@@ -99,6 +99,20 @@ strong { font-weight: 600; }
 .timetable .c-cat { color: var(--text-secondary); font-size: 11px; }
 .timetable .empty { color: var(--text-secondary); text-align: center; }
 .tt-tab-removed {}
+.tt-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; animation: ttFade 0.15s ease; }
+@keyframes ttFade { from { opacity: 0; } to { opacity: 1; } }
+.tt-modal-box { background: var(--bg-primary); border-radius: var(--radius-xl); width: 100%; max-width: 640px; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.tt-modal-head { background: var(--blue); color: #fff; padding: 16px 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.tt-modal-title { font-size: 16px; font-weight: 700; }
+.tt-modal-sub { font-size: 12px; opacity: 0.85; margin-top: 3px; }
+.tt-close { background: rgba(255,255,255,0.2); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.tt-close:hover { background: rgba(255,255,255,0.35); }
+.tt-modal-body { padding: 16px 20px 20px; overflow-y: auto; }
+.tt-month-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.tt-mtab { padding: 7px 20px; border-radius: 20px; border: 0.5px solid var(--border-md); background: var(--bg-primary); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; color: var(--text-primary); }
+.tt-mtab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.tt-modal-foot { margin-top: 16px; padding-top: 14px; border-top: 0.5px solid var(--border); font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+.tt-modal-foot i { color: var(--blue); font-size: 16px; }
 </style>
 </head>
 <body>
@@ -419,15 +433,17 @@ async function showRegistration() {
 
 function navOptions() {
   addOptions(['📅 8월 시간표','📅 9월 시간표','접수방법'], async (ans) => {
-    addUser(ans);
     if (ans.includes('8월')) {
-      await showTimetable('8');
+      showTimetable('8');
+      navOptions();
     } else if (ans.includes('9월')) {
-      await showTimetable('9');
+      showTimetable('9');
+      navOptions();
     } else {
+      addUser(ans);
       await showRegistration();
+      navOptions();
     }
-    navOptions();
   }, true);
 }
 
@@ -451,25 +467,45 @@ function ttRows(courses) {
   return rows;
 }
 
-async function showTimetable(month) {
+function showTimetable(month) {
   const courses = month === '9' ? COURSES_9 : COURSES_8;
-  await addBot(`${month}월 AI·디지털 교육 시간표입니다 📅`, 400);
-  const html = `
-    <div style="font-weight:600;font-size:14px;margin-bottom:8px;color:var(--blue)">2026년 ${month}월 강좌 시간표</div>
-    <div class="timetable-wrap">
-      <table class="timetable">
-        <tr><th>시간</th><th colspan="2">강좌</th></tr>
-        ${ttRows(courses)}
-      </table>
+  const overlay = document.createElement('div');
+  overlay.className = 'tt-modal';
+  overlay.innerHTML = `
+    <div class="tt-modal-box">
+      <div class="tt-modal-head">
+        <div>
+          <div class="tt-modal-title">2026년 ${month}월 서초 AI·디지털 교육 시간표</div>
+          <div class="tt-modal-sub">서초 스마트 에듀센터 · 양재역 10번 출구 앞</div>
+        </div>
+        <button class="tt-close" aria-label="닫기" onclick="this.closest('.tt-modal').remove()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="tt-modal-body">
+        <div class="tt-month-tabs">
+          <button class="tt-mtab ${month==='8'?'active':''}" onclick="reopenTT('8')">8월</button>
+          <button class="tt-mtab ${month==='9'?'active':''}" onclick="reopenTT('9')">9월</button>
+        </div>
+        <div class="timetable-wrap">
+          <table class="timetable">
+            <tr><th>시간</th><th colspan="2">강좌</th></tr>
+            ${ttRows(courses)}
+          </table>
+        </div>
+        <div class="tt-modal-foot">
+          <i class="ti ti-phone" aria-hidden="true"></i>
+          교육 상담 및 접수 콜센터 <strong>1600-1902</strong> · <strong>02-2155-6078</strong>
+        </div>
+      </div>
     </div>`;
-  const chat = document.getElementById('chat');
-  const row = document.createElement('div');
-  row.className = 'bot-row';
-  row.innerHTML = `<div class="bot-avatar"><i class="ti ti-robot" aria-hidden="true"></i></div><div class="bubble bot" style="max-width:96%">${html}</div>`;
-  chat.appendChild(row);
-  row.scrollIntoView({behavior:'smooth',block:'nearest'});
-  navOptions();
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
 }
+
+window.reopenTT = function(m) {
+  const existing = document.querySelector('.tt-modal');
+  if (existing) existing.remove();
+  showTimetable(m);
+};
 
 function reset() {
   document.getElementById('chat').innerHTML = '';
