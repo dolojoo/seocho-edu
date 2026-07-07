@@ -91,13 +91,17 @@ strong { font-weight: 600; }
 .course-sessions ol { margin: 8px 0 2px; padding-left: 20px; }
 .course-sessions li { font-size: 13px; line-height: 1.55; color: var(--text-secondary); margin-bottom: 3px; }
 .timetable-wrap { margin-top: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.timetable { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 12px; }
-.timetable th, .timetable td { border: 0.5px solid var(--border); padding: 5px 6px; text-align: left; vertical-align: top; }
-.timetable th { background: var(--blue-light); color: var(--blue); font-weight: 600; text-align: center; white-space: nowrap; }
+.timetable { border-collapse: collapse; width: 100%; font-size: 12px; }
+.timetable.tt-2col { min-width: 460px; }
+.timetable.tt-4col { min-width: 680px; }
+.timetable th, .timetable td { border: 0.5px solid var(--border); padding: 6px 7px; text-align: left; vertical-align: top; }
+.timetable th { background: var(--blue-light); color: var(--blue); font-weight: 700; text-align: center; line-height: 1.35; }
+.timetable th.time-th { width: 56px; }
+.timetable .th-sub { font-weight: 500; font-size: 10px; opacity: 0.85; }
 .timetable td.time-col { background: var(--bg-secondary); font-weight: 600; text-align: center; white-space: nowrap; color: var(--text-primary); }
-.timetable .c-name { font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 2px; }
-.timetable .c-cat { color: var(--text-secondary); font-size: 11px; }
-.timetable .empty { color: var(--text-secondary); text-align: center; }
+.timetable .c-name { font-weight: 600; color: var(--text-primary); display: block; margin-bottom: 3px; line-height: 1.4; }
+.timetable .c-cat { color: var(--text-secondary); font-size: 10px; }
+.timetable .empty { color: var(--text-secondary); text-align: center; font-size: 11px; }
 .tt-tab-removed {}
 .tt-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; animation: ttFade 0.15s ease; }
 @keyframes ttFade { from { opacity: 0; } to { opacity: 1; } }
@@ -142,27 +146,28 @@ strong { font-weight: 600; }
 
 <script>
 const COURSES_8 = [
-  { name:"캔바로 완성하는 움직이는 사진 앨범", type:"특강", device:"컴퓨터", category:"AI 영상기초", stars:2, when:"8월 월요특강 (8.3~8.10)", time:"09:30~12:00", desc:"내 사진을 캔바에서 추가하고 애니메이션을 활용해 움직이는 사진 앨범으로 만드는 과정", tags:["캔바","사진","애니메이션","초중급"], sessions:["프레임에 사진 추가하고 애니메이션 효과 적용","텍스트와 애니메이션 요소 삽입하고 영상 파일 저장"] },
-  { name:"유튜브 채널관리", type:"정규", device:"컴퓨터+스마트폰", category:"유튜브 브랜딩", stars:4, when:"8월 화/목 정규 (8.4~8.13)", time:"09:30~12:00", desc:"AI로 기획하고 데이터로 관리한다! 구독자의 선택을 받는 채널 최적화 및 브랜딩 실전 가이드", tags:["유튜브","AI","브랜딩","고급"], sessions:["기획과 브랜딩: AI와 함께 설계하는 채널 컨셉, 채널명","개설과 세팅: 프로필 사진, 배너 이미지와 채널 맞춤 설정","제작과 업로드: 썸네일 제작과 영상 업로드, 유튜브 스튜디오 활용","최적화와 관리: 섹션 추가 및 시청자 반응 이끄는 레이아웃"] },
-  { name:"감마 AI로 만드는 초간단 PPT", type:"특강", device:"컴퓨터", category:"AI 오피스", stars:2, when:"8월 월요특강 (8.3~8.10)", time:"13:00~15:30", desc:"간단한 프롬프트 만으로 즉시 실무에 활용 가능한 프레젠테이션을 완성하는 과정", tags:["PPT","AI","Gamma","초중급"], sessions:["주제를 입력해서 PPT 초안 자동 완성","클릭 한번으로 내맘대로 디자인 꾸미기"] },
-  { name:"AI와 함께하는 한글 문서", type:"정규", device:"컴퓨터", category:"AI 오피스", stars:2, when:"8월 화/목 정규 (8.4~8.13)", time:"13:00~15:30", desc:"AI로 기획하고 한글로 완성하는 스마트 워크! 문서 작성의 스트레스를 업무 즐거움으로 바꾸기", tags:["한글","AI","문서","초중급"], sessions:["AI 자료 한글문서에 활용하는 필수 기능","AI가 제안하는 안내문, 공지문 기본 템플릿","문장 다듬고 표로 변환하고 한글 업무 효율 UP","AI 활용한 교정과 문체 튜닝, PDF 변환"] },
-  { name:"제미나이로 AI 시작하기", type:"특강", device:"컴퓨터+스마트폰", category:"AI 기초", stars:1, when:"8월 월요특강 (8.3~8.10)", time:"15:40~18:10", desc:"Gemini(제미나이) 기본 사용법부터 일상에 활용까지 쉽게 배우는 AI 입문 과정", tags:["AI","Gemini","입문","완전기초"], sessions:["제미나이 기본 사용법 익히고 필수 기능 알기","스마트폰으로 제미나이 활용하기"] },
-  { name:"AI를 활용한 멀티미디어 제작", type:"정규", device:"컴퓨터", category:"AI 콘텐츠", stars:2, when:"8월 화/목 정규 (8.4~8.13)", time:"15:40~18:10", desc:"Suno, Nano Banana, Flow 등 생성형 AI 도구를 활용해 음악과 이미지, 영상을 직접 제작해보는 디지털 창작 체험 과정", tags:["AI","음악","이미지","영상","초중급"], sessions:["Suno AI로 나만의 노래 제작","상상을 현실로! 그림 생성을 위한 프롬프트 기초","Nano Banana 활용 AI 이미지 생성","FLOW로 만드는 생동감 넘치는 AI 영상 제작"] },
-  { name:"AI 콘텐츠 크리에이티브 디자인", type:"정규", device:"컴퓨터", category:"AI 콘텐츠 디자인", stars:3, when:"8월 화/목 정규 (8.4~8.13)", time:"18:30~21:00", desc:"ChatGPT·Gemini로 이미지와 웹페이지, Gamma 발표자료를 만드는 AI 콘텐츠 디자인 과정", tags:["AI","디자인","ChatGPT","Gemini","중급"], sessions:["ChatGPT·Gemini 기본 세팅 및 AI 이미지 만들기","AI 이미지 심화 제작, 합성·광고 이미지 만들기","웹페이지 만들기, 이미지 소개 페이지 완성","Gamma 활용 PPT 만들기 및 결과물 공유"] }
+  { name:"캔바로 완성하는 움직이는 사진 앨범", col:"월요특강", type:"특강", device:"컴퓨터", category:"AI 영상기초", stars:2, when:"8월 월요특강 (8.3~8.10)", time:"09:30~12:00", desc:"내 사진을 캔바에서 추가하고 애니메이션을 활용해 움직이는 사진 앨범으로 만드는 과정", tags:["캔바","사진","애니메이션","초중급"], sessions:["프레임에 사진 추가하고 애니메이션 효과 적용","텍스트와 애니메이션 요소 삽입하고 영상 파일 저장"] },
+  { name:"유튜브 채널관리", col:"화/목정규", type:"정규", device:"컴퓨터+스마트폰", category:"유튜브 브랜딩", stars:4, when:"8월 화/목 정규 (8.4~8.13)", time:"09:30~12:00", desc:"AI로 기획하고 데이터로 관리한다! 구독자의 선택을 받는 채널 최적화 및 브랜딩 실전 가이드", tags:["유튜브","AI","브랜딩","고급"], sessions:["기획과 브랜딩: AI와 함께 설계하는 채널 컨셉, 채널명","개설과 세팅: 프로필 사진, 배너 이미지와 채널 맞춤 설정","제작과 업로드: 썸네일 제작과 영상 업로드, 유튜브 스튜디오 활용","최적화와 관리: 섹션 추가 및 시청자 반응 이끄는 레이아웃"] },
+  { name:"감마 AI로 만드는 초간단 PPT", col:"월요특강", type:"특강", device:"컴퓨터", category:"AI 오피스", stars:2, when:"8월 월요특강 (8.3~8.10)", time:"13:00~15:30", desc:"간단한 프롬프트 만으로 즉시 실무에 활용 가능한 프레젠테이션을 완성하는 과정", tags:["PPT","AI","Gamma","초중급"], sessions:["주제를 입력해서 PPT 초안 자동 완성","클릭 한번으로 내맘대로 디자인 꾸미기"] },
+  { name:"AI와 함께하는 한글 문서", col:"화/목정규", type:"정규", device:"컴퓨터", category:"AI 오피스", stars:2, when:"8월 화/목 정규 (8.4~8.13)", time:"13:00~15:30", desc:"AI로 기획하고 한글로 완성하는 스마트 워크! 문서 작성의 스트레스를 업무 즐거움으로 바꾸기", tags:["한글","AI","문서","초중급"], sessions:["AI 자료 한글문서에 활용하는 필수 기능","AI가 제안하는 안내문, 공지문 기본 템플릿","문장 다듬고 표로 변환하고 한글 업무 효율 UP","AI 활용한 교정과 문체 튜닝, PDF 변환"] },
+  { name:"제미나이로 AI 시작하기", col:"월요특강", type:"특강", device:"컴퓨터+스마트폰", category:"AI 기초", stars:1, when:"8월 월요특강 (8.3~8.10)", time:"15:40~18:10", desc:"Gemini(제미나이) 기본 사용법부터 일상에 활용까지 쉽게 배우는 AI 입문 과정", tags:["AI","Gemini","입문","완전기초"], sessions:["제미나이 기본 사용법 익히고 필수 기능 알기","스마트폰으로 제미나이 활용하기"] },
+  { name:"AI를 활용한 멀티미디어 제작", col:"화/목정규", type:"정규", device:"컴퓨터", category:"AI 콘텐츠", stars:2, when:"8월 화/목 정규 (8.4~8.13)", time:"15:40~18:10", desc:"Suno, Nano Banana, Flow 등 생성형 AI 도구를 활용해 음악과 이미지, 영상을 직접 제작해보는 디지털 창작 체험 과정", tags:["AI","음악","이미지","영상","초중급"], sessions:["Suno AI로 나만의 노래 제작","상상을 현실로! 그림 생성을 위한 프롬프트 기초","Nano Banana 활용 AI 이미지 생성","FLOW로 만드는 생동감 넘치는 AI 영상 제작"] },
+  { name:"AI 콘텐츠 크리에이티브 디자인", col:"화/목정규", type:"정규", device:"컴퓨터", category:"AI 콘텐츠 디자인", stars:3, when:"8월 화/목 정규 (8.4~8.13)", time:"18:30~21:00", desc:"ChatGPT·Gemini로 이미지와 웹페이지, Gamma 발표자료를 만드는 AI 콘텐츠 디자인 과정", tags:["AI","디자인","ChatGPT","Gemini","중급"], sessions:["ChatGPT·Gemini 기본 세팅 및 AI 이미지 만들기","AI 이미지 심화 제작, 합성·광고 이미지 만들기","웹페이지 만들기, 이미지 소개 페이지 완성","Gamma 활용 PPT 만들기 및 결과물 공유"] }
 ];
 const COURSES_9 = [
-  { name:"AI와 구글 스프레드시트", type:"특강", device:"컴퓨터", category:"AI 오피스", stars:2, when:"9월 월요특강 (9.7~9.28)", time:"09:30~12:00", desc:"구글 스프레드시트의 기본 사용법부터 필수 기능까지 쉽고 체계적으로 배우는 과정", tags:["컴퓨터","구글","스프레드시트","엑셀","AI","초중급"], sessions:["구글 스프레드시트 화면구성 이해하기","AI답변의 표를 구글스프레드시트에서 편집하기","필수 계산 활용하기","데이터 관리하기"] },
-  { name:"편집은 기본 AI는 덤! 캡컷", type:"특강", device:"스마트폰", category:"AI 영상편집", stars:3, when:"9월 월요특강 (9.7~9.28)", time:"13:00~15:30", desc:"캡컷 AI로 완성하는 나만의 브이로그 영상 제작하는 과정", tags:["스마트폰","영상편집","캡컷","AI","중급"], sessions:["앱 설치부터 기본 기능 마스터하기","컷편집, 장면전환, 동영상 효과 적용","AI 배경 제거 활용과 크로마키 사용","AI 자동 자막(캡션) 생성 및 스타일 편집"] },
-  { name:"블로그 시작에서 AI콘텐츠까지 마스터", type:"특강", device:"컴퓨터+스마트폰", category:"블로그·AI 콘텐츠", stars:2, when:"9월 월요특강 (9.7~9.28)", time:"15:40~18:10", desc:"블로그를 사용하고 AI로 콘텐츠 생성해서 포스팅하는 스마트한 블로그 과정", tags:["블로그","AI","콘텐츠","Gemini","초중급"], sessions:["블로그 개설/타이틀 설정","카테고리 배치와 세부 레이아웃 설정","PC와 모바일로 폼나게 글쓰기","Gemini를 활용한 콘텐츠 작성"] },
-  { name:"틴커캐드로 3D모델링과 프린팅", type:"특강", device:"컴퓨터", category:"AI 메이커·3D 창작", stars:3, when:"9월 월요특강 (9.7~9.28)", time:"18:30~21:00", desc:"AI와 3D모델링으로 나만의 스마트폰 거치대를 만드는 과정 (재료비·출력비 10만원 이내 별도)", tags:["3D","모델링","틴커캐드","AI","메이커","중급"], sessions:["3D모델링·프린팅 기초이론, 틴커캐드 화면과 도형 조작","틴커캐드 기초 연습, 나만의 이름표 모델링","AI로 아이디어 구상, 스마트폰 거치대 모델링·출력","3D출력물 후가공, 작품 발표 및 상품페이지 만들기"] },
-  { name:"Vrew 숏폼 영상 제작", type:"정규", device:"컴퓨터", category:"AI 영상제작", stars:2, when:"9월 화/목 정규 (9.1~9.29)", time:"09:30~12:00", desc:"Vrew와 AI로 텍스트·이미지 기반 숏폼 영상 만들기 과정", tags:["영상","숏폼","Vrew","AI","초중급"], sessions:["화면 구성 및 메뉴 사용법","샘플 영상 편집하기","서식 설정, 컷편집","이미지로 비디오 만들기","템플릿으로 숏폼 만들기","텍스트로 비디오 만들기","내사진으로 영상 만들기","AI 목소리 활용하기"] },
-  { name:"Google Gemini 스마트 활용", type:"정규", device:"컴퓨터+스마트폰", category:"AI 스마트워크·업무자동화", stars:2, when:"9월 화/목 정규 (9.1~9.29)", time:"13:00~15:30", desc:"Gemini와 Google Workspace로 문서·설문·데이터 업무를 자동화하는 과정", tags:["AI","Gemini","구글","업무자동화","초중급"], sessions:["제미나이 시작하기와 대화의 기술","이미지 분석 및 파일 요약으로 업무 단축","이미지 생성 및 모바일 활용","캔버스 & 맞춤형 젬스(Gems) 설계","구글 Docs와 Gemini: 문서 작성·교정","구글 Sheets와 Gemini: 데이터 구조화·정리","구글 Slides와 Gemini: 슬라이드 기획·디자인","구글 Forms와 Gemini: 질문지 생성·결과 분석"] },
-  { name:"모두를 위한 AI 서비스, 바이브코딩", type:"정규", device:"컴퓨터", category:"AI 리터러시·바이브코딩", stars:4, when:"9월 화/목 정규 (9.1~9.29)", time:"15:40~18:10", desc:"생활 속 아이디어를 AI 웹앱과 게임으로 구현하는 과정", tags:["AI","바이브코딩","웹앱","게임","고급"], sessions:["바이브코딩 개념과 ChatGPT·Gemini 활용법","서비스 주제·사용자·화면 구성 및 AI 윤리 기획","ChatGPT로 카페 주문 도우미 기획","Gemini Canvas로 카페 주문 도우미 만들기","ChatGPT로 AI 윤리 퀴즈게임 기획","Gemini Canvas로 AI 윤리 퀴즈게임 만들기","자유주제 웹앱 또는 게임 기획","자유주제 작품 완성, 오류 수정 및 발표·공유"] },
-  { name:"처음 시작하는 ChatGPT와 생성형 AI", type:"특강", device:"컴퓨터+스마트폰", category:"ChatGPT 입문", stars:1, when:"9월 토요특강 (9.5~9.12)", time:"09:30~12:00", desc:"ChatGPT 사용법부터 생활 활용, AI 이미지 제작까지 차근차근 익히는 입문 과정", tags:["AI","ChatGPT","입문","완전기초","토요일"], sessions:["생성형 AI와 ChatGPT 이해, 회원가입·기본 설정, 기초 프롬프트 작성·생활 활용","ChatGPT로 AI 이미지 만들기, 나만의 캐릭터와 이미지 완성"] },
-  { name:"처음 시작하는 Gemini와 생성형 AI", type:"특강", device:"컴퓨터+스마트폰", category:"Gemini 입문·활용", stars:2, when:"9월 토요특강 (9.5~9.12)", time:"13:00~15:30", desc:"Gemini의 다양한 기능을 활용해 정보 찾기, 자료 정리, AI 이미지 만들기를 실습하는 입문 과정", tags:["AI","Gemini","입문","완전기초","토요일"], sessions:["Gemini 시작·기본 설정, 텍스트·음성·사진·문서로 정보 검색·요약","Gemini로 AI 이미지 만들기, 나만의 이미지 완성"] },
-  { name:"Gemini Canvas로 만드는 나만의 미니게임", type:"특강", device:"컴퓨터", category:"AI 리터러시·바이브코딩", stars:3, when:"9월 토요특강 (9.5~9.12)", time:"15:40~18:10", desc:"코딩 없이도 Gemini Canvas로 게임을 기획하고 제작하는 AI 미니게임 만들기 과정", tags:["AI","바이브코딩","게임","Gemini","토요일","중급"], sessions:["바이브코딩·Gemini Canvas 이해, 게임 기본형 만들기","제한시간·효과음·단계 추가, 나만의 미니게임 완성·공유"] },
-  { name:"Suno AI로 만드는 나만의 노래와 CM송", type:"특강", device:"컴퓨터", category:"AI 음악", stars:1, when:"9월 토요특강 (9.19)", time:"09:30~12:00", desc:"AI와 함께 가사를 쓰고 작곡하여 나만의 노래와 특별한 CM송을 완성하는 창작 과정", tags:["AI","음악","Suno","창작","토요일","완전기초"], sessions:["노래 주제·콘셉트 정하기, AI 가사 작성, Suno AI로 음악 생성 및 나만의 노래·CM송 완성"] },
-  { name:"VREW와 AI로 만드는 나만의 추억영상", type:"특강", device:"스마트폰", category:"AI 영상콘텐츠활용", stars:2, when:"9월 토요특강 (9.19)", time:"13:00~15:30", desc:"스마트폰 사진과 영상을 활용해 AI로 이야기와 자막을 만들고 추억영상을 완성하는 과정", tags:["AI","영상","Vrew","추억","토요일","초중급"], sessions:["스마트폰 사진·영상 정리, AI로 이야기·자막 작성, VREW로 추억영상 완성·공유"] }
+  { name:"AI와 구글 스프레드시트", col:"월요특강", type:"특강", device:"컴퓨터", category:"AI 오피스", stars:2, when:"9월 월요특강 (9.7~9.28)", time:"09:30~12:00", desc:"구글 스프레드시트의 기본 사용법부터 필수 기능까지 쉽고 체계적으로 배우는 과정", tags:["컴퓨터","구글","스프레드시트","엑셀","AI","초중급"], sessions:["구글 스프레드시트 화면구성 이해하기","AI답변의 표를 구글스프레드시트에서 편집하기","필수 계산 활용하기","데이터 관리하기"] },
+  { name:"편집은 기본 AI는 덤! 캡컷", col:"월요특강", type:"특강", device:"스마트폰", category:"AI 영상편집", stars:3, when:"9월 월요특강 (9.7~9.28)", time:"13:00~15:30", desc:"캡컷 AI로 완성하는 나만의 브이로그 영상 제작하는 과정", tags:["스마트폰","영상편집","캡컷","AI","중급"], sessions:["앱 설치부터 기본 기능 마스터하기","컷편집, 장면전환, 동영상 효과 적용","AI 배경 제거 활용과 크로마키 사용","AI 자동 자막(캡션) 생성 및 스타일 편집"] },
+  { name:"블로그 시작에서 AI콘텐츠까지 마스터", col:"월요특강", type:"특강", device:"컴퓨터+스마트폰", category:"블로그·AI 콘텐츠", stars:2, when:"9월 월요특강 (9.7~9.28)", time:"15:40~18:10", desc:"블로그를 사용하고 AI로 콘텐츠 생성해서 포스팅하는 스마트한 블로그 과정", tags:["블로그","AI","콘텐츠","Gemini","초중급"], sessions:["블로그 개설/타이틀 설정","카테고리 배치와 세부 레이아웃 설정","PC와 모바일로 폼나게 글쓰기","Gemini를 활용한 콘텐츠 작성"] },
+  { name:"틴커캐드로 3D모델링과 프린팅", col:"월요특강", type:"특강", device:"컴퓨터", category:"AI 메이커·3D 창작", stars:3, when:"9월 월요특강 (9.7~9.28)", time:"18:30~21:00", desc:"AI와 3D모델링으로 나만의 스마트폰 거치대를 만드는 과정 (재료비·출력비 10만원 이내 별도)", tags:["3D","모델링","틴커캐드","AI","메이커","중급"], sessions:["3D모델링·프린팅 기초이론, 틴커캐드 화면과 도형 조작","틴커캐드 기초 연습, 나만의 이름표 모델링","AI로 아이디어 구상, 스마트폰 거치대 모델링·출력","3D출력물 후가공, 작품 발표 및 상품페이지 만들기"] },
+  { name:"Vrew 숏폼 영상 제작", col:"화/목정규", type:"정규", device:"컴퓨터", category:"AI 영상제작", stars:2, when:"9월 화/목 정규 (9.1~9.29)", time:"09:30~12:00", desc:"Vrew와 AI로 텍스트·이미지 기반 숏폼 영상 만들기 과정", tags:["영상","숏폼","Vrew","AI","초중급"], sessions:["화면 구성 및 메뉴 사용법","샘플 영상 편집하기","서식 설정, 컷편집","이미지로 비디오 만들기","템플릿으로 숏폼 만들기","텍스트로 비디오 만들기","내사진으로 영상 만들기","AI 목소리 활용하기"] },
+  { name:"Google Gemini 스마트 활용", col:"화/목정규", type:"정규", device:"컴퓨터+스마트폰", category:"AI 스마트워크·업무자동화", stars:2, when:"9월 화/목 정규 (9.1~9.29)", time:"13:00~15:30", desc:"Gemini와 Google Workspace로 문서·설문·데이터 업무를 자동화하는 과정", tags:["AI","Gemini","구글","업무자동화","초중급"], sessions:["제미나이 시작하기와 대화의 기술","이미지 분석 및 파일 요약으로 업무 단축","이미지 생성 및 모바일 활용","캔버스 & 맞춤형 젬스(Gems) 설계","구글 Docs와 Gemini: 문서 작성·교정","구글 Sheets와 Gemini: 데이터 구조화·정리","구글 Slides와 Gemini: 슬라이드 기획·디자인","구글 Forms와 Gemini: 질문지 생성·결과 분석"] },
+  { name:"모두를 위한 AI 서비스, 바이브코딩", col:"화/목정규", type:"정규", device:"컴퓨터", category:"AI 리터러시·바이브코딩", stars:4, when:"9월 화/목 정규 (9.1~9.29)", time:"18:30~21:00", desc:"생활 속 아이디어를 AI 웹앱과 게임으로 구현하는 과정", tags:["AI","바이브코딩","웹앱","게임","고급"], sessions:["바이브코딩 개념과 ChatGPT·Gemini 활용법","서비스 주제·사용자·화면 구성 및 AI 윤리 기획","ChatGPT로 카페 주문 도우미 기획","Gemini Canvas로 카페 주문 도우미 만들기","ChatGPT로 AI 윤리 퀴즈게임 기획","Gemini Canvas로 AI 윤리 퀴즈게임 만들기","자유주제 웹앱 또는 게임 기획","자유주제 작품 완성, 오류 수정 및 발표·공유"] },
+  { name:"캔바(Canva) 디자인", col:"화/목정규", type:"정규", device:"컴퓨터", category:"디자인", stars:2, when:"9월 화/목 정규 (9.1~9.29)", time:"15:40~18:10", desc:"캔바를 활용해 포스터·카드뉴스·홍보영상 등 실전 홍보 콘텐츠를 제작하는 디자인 과정", tags:["캔바","디자인","포스터","카드뉴스","초중급"], sessions:["캔바 기본 사용법과 템플릿 활용","포스터·카드뉴스 디자인 제작","홍보영상과 SNS 콘텐츠 만들기","실전 홍보 콘텐츠 완성 및 공유"] },
+  { name:"처음 시작하는 ChatGPT와 생성형 AI", col:"토요특강A", type:"특강", device:"컴퓨터+스마트폰", category:"ChatGPT 입문", stars:1, when:"9월 토요특강 (9.5~9.12)", time:"09:30~12:00", desc:"ChatGPT 사용법부터 생활 활용, AI 이미지 제작까지 차근차근 익히는 입문 과정", tags:["AI","ChatGPT","입문","완전기초","토요일"], sessions:["생성형 AI와 ChatGPT 이해, 회원가입·기본 설정, 기초 프롬프트 작성·생활 활용","ChatGPT로 AI 이미지 만들기, 나만의 캐릭터와 이미지 완성"] },
+  { name:"처음 시작하는 Gemini와 생성형 AI", col:"토요특강A", type:"특강", device:"컴퓨터+스마트폰", category:"Gemini 입문·활용", stars:2, when:"9월 토요특강 (9.5~9.12)", time:"13:00~15:30", desc:"Gemini의 다양한 기능을 활용해 정보 찾기, 자료 정리, AI 이미지 만들기를 실습하는 입문 과정", tags:["AI","Gemini","입문","완전기초","토요일"], sessions:["Gemini 시작·기본 설정, 텍스트·음성·사진·문서로 정보 검색·요약","Gemini로 AI 이미지 만들기, 나만의 이미지 완성"] },
+  { name:"Gemini Canvas로 만드는 나만의 미니게임", col:"토요특강A", type:"특강", device:"컴퓨터", category:"AI 리터러시·바이브코딩", stars:3, when:"9월 토요특강 (9.5~9.12)", time:"15:40~18:10", desc:"코딩 없이도 Gemini Canvas로 게임을 기획하고 제작하는 AI 미니게임 만들기 과정", tags:["AI","바이브코딩","게임","Gemini","토요일","중급"], sessions:["바이브코딩·Gemini Canvas 이해, 게임 기본형 만들기","제한시간·효과음·단계 추가, 나만의 미니게임 완성·공유"] },
+  { name:"Suno AI로 만드는 나만의 노래와 CM송", col:"토요특강B", type:"특강", device:"컴퓨터", category:"AI 음악", stars:1, when:"9월 토요특강 (9.19)", time:"09:30~12:00", desc:"AI와 함께 가사를 쓰고 작곡하여 나만의 노래와 특별한 CM송을 완성하는 창작 과정", tags:["AI","음악","Suno","창작","토요일","완전기초"], sessions:["노래 주제·콘셉트 정하기, AI 가사 작성, Suno AI로 음악 생성 및 나만의 노래·CM송 완성"] },
+  { name:"VREW와 AI로 만드는 나만의 추억영상", col:"토요특강B", type:"특강", device:"스마트폰", category:"AI 영상콘텐츠활용", stars:2, when:"9월 토요특강 (9.19)", time:"13:00~15:30", desc:"스마트폰 사진과 영상을 활용해 AI로 이야기와 자막을 만들고 추억영상을 완성하는 과정", tags:["AI","영상","Vrew","추억","토요일","초중급"], sessions:["스마트폰 사진·영상 정리, AI로 이야기·자막 작성, VREW로 추억영상 완성·공유"] }
 ];
 const ALL_COURSES = [...COURSES_8, ...COURSES_9];
 
@@ -447,28 +452,40 @@ function navOptions() {
   }, true);
 }
 
-function ttRows(courses) {
+function ttTable(month) {
+  const courses = month === '9' ? COURSES_9 : COURSES_8;
   const slots = ['09:30~12:00','13:00~15:30','15:40~18:10','18:30~21:00'];
+  // Column definitions per month
+  const cols = month === '9'
+    ? [
+        { key:'월요특강', title:'월요 특강', sub:'9.7 ~ 9.28' },
+        { key:'화/목정규', title:'화/목 정규과정', sub:'9.1 ~ 9.29' },
+        { key:'토요특강A', title:'토요 특강', sub:'9.5 ~ 9.12' },
+        { key:'토요특강B', title:'토요 특강', sub:'9.19' }
+      ]
+    : [
+        { key:'월요특강', title:'월요 특강', sub:'8.3 ~ 8.10' },
+        { key:'화/목정규', title:'화/목 정규과정', sub:'8.4 ~ 8.13' }
+      ];
+
+  const cell = (c) => c
+    ? `<td><span class="c-name">${c.name}</span><span class="c-cat">${starsHtml(c.stars)} ${c.category}</span></td>`
+    : `<td class="empty">- 과정 없음 -</td>`;
+
+  let head = `<tr><th class="time-th">시간</th>${cols.map(col=>`<th>${col.title}<br><span class="th-sub">${col.sub} (정원 30명)</span></th>`).join('')}</tr>`;
   let rows = '';
   for (const slot of slots) {
-    const inSlot = courses.filter(c => c.time === slot);
     rows += `<tr><td class="time-col">${slot.replace('~','<br>~<br>')}</td>`;
-    if (inSlot.length === 0) {
-      rows += `<td class="empty" colspan="2">- 과정 없음 -</td>`;
-    } else {
-      // up to 2 columns: 특강 / 정규 etc — just list each
-      const cells = inSlot.map(c => `<td><span class="c-name">${c.name}</span><span class="c-cat">${starsHtml(c.stars)} ${c.category} · ${c.when.replace(/\(.*\)/,'').trim()}</span></td>`).join('');
-      // pad to keep 2 columns where possible
-      rows += cells;
-      if (inSlot.length === 1) rows += `<td class="empty"></td>`;
+    for (const col of cols) {
+      const c = courses.find(x => x.time === slot && x.col === col.key);
+      rows += cell(c);
     }
     rows += '</tr>';
   }
-  return rows;
+  return `<table class="timetable tt-${month==='9'?'4col':'2col'}">${head}${rows}</table>`;
 }
 
 function showTimetable(month) {
-  const courses = month === '9' ? COURSES_9 : COURSES_8;
   const overlay = document.createElement('div');
   overlay.className = 'tt-modal';
   overlay.innerHTML = `
@@ -486,10 +503,7 @@ function showTimetable(month) {
           <button class="tt-mtab ${month==='9'?'active':''}" onclick="reopenTT('9')">9월</button>
         </div>
         <div class="timetable-wrap">
-          <table class="timetable">
-            <tr><th>시간</th><th colspan="2">강좌</th></tr>
-            ${ttRows(courses)}
-          </table>
+          ${ttTable(month)}
         </div>
         <div class="tt-modal-foot">
           <i class="ti ti-phone" aria-hidden="true"></i>
